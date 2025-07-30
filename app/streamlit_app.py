@@ -84,7 +84,7 @@ def predict_future(model, scaler, last_sequence, days, model_type):
 
     return predictions.flatten()
 
-with st.container(height=700, border=True):
+with st.container(height=750, border=True):
     ticker = st.text_input('Enter Stock Ticker', 'AAPL')
 
     if ticker:
@@ -102,10 +102,6 @@ with st.container(height=700, border=True):
             with col2:
                 st.subheader('Price Chart')
                 st.line_chart(df['Close'], use_container_width=True)
-                # fig = go.Figure()
-                # fig.add_trace(go.Scatter(x=df.index, y=df['Close'], mode='lines', name='Close Price'))
-                # fig.update_layout(title=f'{ticker} Stock Price', xaxis_title='Date', yaxis_title='Price (USD)')
-                # st.plotly_chart(fig, use_container_width=True)
             
             df_features = prepare_features(df)
 
@@ -126,17 +122,19 @@ with st.container(height=700, border=True):
 
                         col1, col2 = st.columns(2)
                         with col1:
-                            st.metric('MSE', f'{mse:.2f}')
+                            st.metric('MSE (Mean Squared Error)', f'{mse:.2f}')
                         with col2:
-                            st.metric('MAE', f'{mae:.2f}')
+                            st.metric('MAE (Mean Absolute Error)', f'{mae:.2f}')
 
                         fig = go.Figure()
-                        # fig.add_trace(go.Scatter(
-                        #     x=df.index[:split_idx],
-                        #     y=df['Close'][:split_idx],
-                        #     name='Training Data',
-                        #     line=dict(color='blue')
-                        # ))
+
+                        # Training data
+                        fig.add_trace(go.Scatter(
+                            x=df.index[:split_idx],
+                            y=np.array(df['Close'][:split_idx]).reshape(-1, 1).flatten(),
+                            name='Training Data',
+                            line=dict(color='blue')
+                        ))
 
                         # Test data
                         test_dates = df.index[split_idx + 60:]
