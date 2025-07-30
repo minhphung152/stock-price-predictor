@@ -10,6 +10,8 @@ This project predicts future stock prices using learning models like XGBoost and
 
 ## Getting Started
 ```bash
+git clone https://github.com/minhphung152/stock-price-predictor.git
+cd stock-price-predictor
 pip install -r requirements.txt
 ```
 
