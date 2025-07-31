@@ -6,3 +6,4 @@ xgboost
 tensorflow
 streamlit
 matplotlib
+plotly
